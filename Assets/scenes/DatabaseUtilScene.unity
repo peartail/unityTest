@@ -142,25 +142,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterList:
   - index: 0
-    level: 1
+    className: Warrior
     hp: 100
     energy: 10
   - index: 0
-    level: 2
-    hp: 110
-    energy: 11
-  - index: 0
-    level: 3
-    hp: 120
-    energy: 12
-  - index: 0
-    level: 4
-    hp: 130
-    energy: 13
-  - index: 0
-    level: 5
-    hp: 140
-    energy: 14
+    className: Mage
+    hp: 80
+    energy: 15
 --- !u!4 &125972940
 Transform:
   m_ObjectHideFlags: 0

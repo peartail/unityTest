@@ -33,6 +33,8 @@ public class ExDataReader : MonoBehaviour {
         instance = this;
     }
 
+
+    #region LOAD
     public string GetData(string filepath,EReaderType type = EReaderType.File)
     {
         switch (type)
@@ -45,6 +47,9 @@ public class ExDataReader : MonoBehaviour {
 
         return null;
     }
+
+   
+
     public delegate void OnCompleteGetData(string data);
     public void GetDataAsync(string filepath, OnCompleteGetData compFunc, EReaderType type = EReaderType.File)
     {
@@ -94,4 +99,16 @@ public class ExDataReader : MonoBehaviour {
     {
         return null;
     }
+
+    #endregion
+
+
+    #region SAVE
+
+    public void SaveData(string filePath, EReaderType type = EReaderType.File)
+    {
+
+    }
+
+    #endregion
 }

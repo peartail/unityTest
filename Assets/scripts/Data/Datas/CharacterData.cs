@@ -100,7 +100,6 @@ public class CharacterData : IDataResource
     {
         JSONObject root = new JSONObject();
         JSONObject cc = characterCur.GetJNode();
-        root.Add("CharacterBase", cb);
         root.Add("CharacterCur", cc);
 
         return root.ToString();

@@ -2,34 +2,50 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 [Serializable]
 public class CharacterBase {
     [SerializeField]
-    private int index;
-    [SerializeField]
-    private int level;
+    private string className;
     [SerializeField]
     private int hp;
     [SerializeField]
     private int energy;
     public int HP { get { return hp; } }
     public int Energy { get { return energy; } }
-    public CharacterBase(int index,int level, int hp,int energy)
+    public CharacterBase(string className, int hp,int energy)
     {
-        this.index = index;
-        this.level = level;
+        this.className = className;
         this.hp = hp;
         this.energy = energy;
     }
+    
+    public JSONObject ToJson()
+    {
+        JSONObject obj = new JSONObject();
+        obj.Add("classname", new JSONString(className));
+        obj.Add("hp", new JSONNumber(hp));
+        obj.Add("energy", new JSONNumber(energy));
 
+        return obj;
+    }
+
+    public static CharacterBase GetJson(JSONObject obj)
+    {
+        string cname = obj["classname"].ToString();
+        int hp = obj["hp"].AsInt;
+        int energy =  obj["energy"].AsInt;
+
+        return new CharacterBase(cname, hp, energy);
+    }
     
 }
 
 public class CharacterBaseCollection
 {
-    private string filePath = "";
+    private static string filePath = "";
     private Dictionary<int, CharacterBase> characterMap = null;
     private bool isUpdated = false;
     public CharacterBase Get(int index)
@@ -52,20 +68,59 @@ public class CharacterBaseCollection
         
     }
 
-    public void Load()
+    private void Load()
     {
+        characterMap = new Dictionary<int, CharacterBase>();
+        var list = DataLoad().GetEnumerator();
+        int count = 0;
+        while(list.MoveNext())
+        {
+            var data = list.Current;
+            characterMap[count++] = data;
+        }
+
+        isUpdated = true;
+    }
+
+    #region EXTERNDATA
+
+    public static void DataSave(List<CharacterBase> characterList)
+    {
+        if (File.Exists(filePath))
+        {
+            JSONObject node = new JSONObject();
+            JSONArray arr = new JSONArray();
+            var iter = characterList.GetEnumerator();
+            while (iter.MoveNext())
+            {
+                arr.Add(iter.Current.ToJson());
+            }
+
+            node.Add("arr", arr);
+
+            string jstring = node.ToString();
+
+            File.WriteAllText(filePath, jstring);
+
+        }
+    }
+
+    public static List<CharacterBase> DataLoad()
+    {
+        List<CharacterBase> result = new List<CharacterBase>();
         string data = ExDataReader.G.GetData(filePath);
 
         JSONNode node = JSON.Parse(data);
         JSONArray arr = node.AsObject["c"].AsArray;
         var iter = arr.GetEnumerator();
-        while(iter.MoveNext())
+        while (iter.MoveNext())
         {
             JSONObject loopobj = iter.Current.Value.AsObject;
-            
+
         }
-
-
-        isUpdated = true;
+        return result;
     }
+
+    #endregion
+
 }
