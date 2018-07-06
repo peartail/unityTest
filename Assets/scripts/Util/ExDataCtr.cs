@@ -4,20 +4,20 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
-public class ExDataReader : MonoBehaviour {
+public class ExDataCtr : MonoBehaviour {
     public enum EReaderType
     {
         File,
         HTTP,
     }
 
-    private static ExDataReader instance = null;
+    private static ExDataCtr instance = null;
 
-    public static ExDataReader G
+    public static ExDataCtr G
     {
         get
         {
-            if(instance == null)
+            if (instance == null)
             {
                 return null;
             }
@@ -25,7 +25,7 @@ public class ExDataReader : MonoBehaviour {
             return instance;
         }
     }
-    
+
 
     private void Awake()
     {
@@ -35,7 +35,7 @@ public class ExDataReader : MonoBehaviour {
 
 
     #region LOAD
-    public string GetData(string filepath,EReaderType type = EReaderType.File)
+    public string GetData(string filepath, EReaderType type = EReaderType.File)
     {
         switch (type)
         {
@@ -48,12 +48,12 @@ public class ExDataReader : MonoBehaviour {
         return null;
     }
 
-   
+
 
     public delegate void OnCompleteGetData(string data);
     public void GetDataAsync(string filepath, OnCompleteGetData compFunc, EReaderType type = EReaderType.File)
     {
-        StartCoroutine(GetDataCoroutine(filepath,compFunc,type));
+        StartCoroutine(GetDataCoroutine(filepath, compFunc, type));
     }
 
     public IEnumerator GetDataCoroutine(string filepath, OnCompleteGetData compFunc, EReaderType type = EReaderType.File)
@@ -69,7 +69,7 @@ public class ExDataReader : MonoBehaviour {
                 break;
         }
 
-        if(result != null)
+        if (result != null)
         {
             compFunc(result);
         }
@@ -77,9 +77,9 @@ public class ExDataReader : MonoBehaviour {
         yield return null;
     }
 
-    private string GetFileData(string filepath)
+    private static string GetFileData(string filepath)
     {
-        if(File.Exists(filepath))
+        if (File.Exists(filepath))
         {
             using (var fileStream = File.OpenRead(filepath))
             {
@@ -100,14 +100,37 @@ public class ExDataReader : MonoBehaviour {
         return null;
     }
 
+    public static string ETLoadData(string path)
+    {
+        return GetFileData(path);
+    }
+
     #endregion
 
 
     #region SAVE
 
-    public void SaveData(string filePath, EReaderType type = EReaderType.File)
+    public bool SaveData(string filePath,string data,  EReaderType type = EReaderType.File)
     {
+        switch (type)
+        {
+            case EReaderType.File:
+                SaveFileData(filePath,data);
+                break;
+        }
 
+        return true;
+    }
+
+    private static bool SaveFileData(string filepath,string data)
+    {
+        File.WriteAllText(filepath, data);
+        return false;
+    }
+
+    public static bool ETSaveData(string path,string data)
+    {
+        return SaveFileData(path, data);
     }
 
     #endregion

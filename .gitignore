@@ -1,0 +1,12 @@
+.vs/
+Assembly-CSharp-firstpass.csproj
+Assembly-CSharp.csproj
+Library/
+Temp/
+UniRXTest.Plugins.csproj
+UniRXTest.csproj
+UniRXTest.sln
+Unity.AssetBundleBrowser.Editor.Tests.csproj
+Unity.AssetBundleBrowser.Editor.csproj
+obj/
+unityTest.sln

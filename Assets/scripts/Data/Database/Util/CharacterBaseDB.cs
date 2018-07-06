@@ -9,28 +9,11 @@ using UnityEngine;
 
 public class CharacterBaseDB : MonoBehaviour {
     public List<CharacterBase> characterList = new List<CharacterBase>();
-    public CharacterBaseCollection collection = new CharacterBaseCollection();
     private string path = "/Asset/Resource/CharacterBase.data";
 	// Use this for initialization
 	public void Save()
     {
-        if(File.Exists(path))
-        {
-            JSONObject node = new JSONObject();
-            JSONArray arr = new JSONArray();
-            var iter = characterList.GetEnumerator();
-            while(iter.MoveNext())
-            {
-                arr.Add(iter.Current.ToJson());
-            }
-
-            node.Add("arr", arr);
-
-            string jstring = node.ToString();
-
-            File.WriteAllText(path, jstring);
-
-        }
+        CharacterBaseCollection.DataSave(characterList);
     }
 
     public void Load()
@@ -41,7 +24,7 @@ public class CharacterBaseDB : MonoBehaviour {
             return;
         }
 
-
+        characterList = CharacterBaseCollection.DataLoad();
 
     }
 }
