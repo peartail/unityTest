@@ -9,24 +9,20 @@ using UnityEngine;
 
 public class CharacterBaseDB : MonoBehaviour {
     public List<CharacterBase> characterList = new List<CharacterBase>();
-    private string path = "/Asset/Resource/CharacterBase.data";
-	// Use this for initialization
-	public void Save()
+    public readonly static string filePath = "Assets/Bundles/Data/CharacterBase.dat";
+    // Use this for initialization
+    public void Save()
     {
-        CharacterBaseCollection.DataSave(characterList);
+        ExDataCtr.ETSaveData(filePath, CharacterBaseCollection.DataToJson(characterList));
     }
 
     public void Load()
     {
-        if (!File.Exists(path))
-        {
-            Debug.LogError("먼저 저장부터해주세요.");
-            return;
-        }
-
-        characterList = CharacterBaseCollection.DataLoad();
-
+        string data = ExDataCtr.ETLoadData(filePath);
+        JSONNode node = JSON.Parse(data);
+        characterList = CharacterBaseCollection.JsonToData(node.AsObject);
     }
+    
 }
 
 [CustomEditor(typeof(CharacterBaseDB))]

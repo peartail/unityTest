@@ -35,7 +35,7 @@ public class CharacterBase
 
     public static CharacterBase GetJson(JSONObject obj)
     {
-        string cname = obj["classname"].ToString();
+        string cname = obj["classname"];
         int hp = obj["hp"].AsInt;
         int energy = obj["energy"].AsInt;
 
@@ -46,7 +46,6 @@ public class CharacterBase
 
 public class CharacterBaseCollection
 {
-    private static string filePath = "Assets/Bundles/Data/CharacterBase.dat";
     private Dictionary<int, CharacterBase> characterMap = null;
     private bool isUpdated = false;
     public CharacterBase Get(int index)
@@ -71,8 +70,10 @@ public class CharacterBaseCollection
 
     private void Load()
     {
+        string filedata = ExDataCtr.ETLoadData("Assets/Bundles/Data/CharacterBase");
+        JSONObject node = JSON.Parse(filedata).AsObject;
         characterMap = new Dictionary<int, CharacterBase>();
-        var list = DataLoad().GetEnumerator();
+        var list = JsonToData(node).GetEnumerator();
         int count = 0;
         while (list.MoveNext())
         {
@@ -85,7 +86,7 @@ public class CharacterBaseCollection
 
     #region EXTERNDATA
 
-    public static void DataSave(List<CharacterBase> characterList)
+    public static string DataToJson(List<CharacterBase> characterList)
     {
         JSONObject node = new JSONObject();
         JSONArray arr = new JSONArray();
@@ -98,18 +99,13 @@ public class CharacterBaseCollection
         node.Add("arr", arr);
 
         string jstring = node.ToString();
-        
-        ExDataCtr.ETSaveData(filePath, jstring);
-
+        return jstring;
     }
 
-    public static List<CharacterBase> DataLoad()
+    public static List<CharacterBase> JsonToData(JSONObject obj)
     {
         List<CharacterBase> result = new List<CharacterBase>();
-        string data = ExDataCtr.ETLoadData(filePath);
-
-        JSONNode node = JSON.Parse(data);
-        JSONArray arr = node.AsObject["arr"].AsArray;
+        JSONArray arr = obj.AsObject["arr"].AsArray;
         var iter = arr.GetEnumerator();
         while (iter.MoveNext())
         {
