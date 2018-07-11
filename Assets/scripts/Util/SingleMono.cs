@@ -22,5 +22,4 @@ public class SingleMono<T> : MonoBehaviour where T : class {
             return instance;
         }
     }
-
 }

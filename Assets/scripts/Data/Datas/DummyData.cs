@@ -28,13 +28,13 @@ public sealed class DummyData : IDataResource{
 
     
 
-    public string GetJsonData()
+    public JSONNode GetJsonData()
     {
         JSONObject jobj = new JSONObject();
         JSONNumber jcount = new JSONNumber(count.Value);
         jobj.Add("count", jcount);
 
-        return jobj.ToString();
+        return jobj;
     }
 
     public void OnChange(ChangeItem changeFunc)

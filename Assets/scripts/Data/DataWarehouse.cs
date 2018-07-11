@@ -1,245 +1,166 @@
 ﻿using SimpleJSON;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using UnityEngine;
-
 using UniRx;
-
+using UnityEngine;
 
 namespace Data
 {
-    
-    public delegate void ChangeItem(IDataResource data);
-    public class ChangeItemWrapper
-    {
 
-    }
+
     public interface IDataResource
     {
-        string GetJsonData();
+        JSONNode GetJsonData();
         void SetJsonData(JSONNode node);
-        EDataPlace GetDataPlace();
-        void OnChange(ChangeItem changeFunc);
     }
-
-    public enum EDataPlace : int
+    public class DataBox
     {
-        File = 0,
-    }
-
-    public enum EDataResource : int
-    {
-        DummyData = 0,
-    }
-
-    
-    public class DataWarehouse : SingleMono<DataWarehouse>
-    {
-        
-        //private static DataWarehouse instance = null;
-        private static bool isLoaded = false;
-        private HashSet<IDataResource> dataMap = null;
-        private List<IDataResource> pendingSaveList = null;
+        private string dataName;
+        private HashSet<IDataResource> dataSet = null;
         private IDataResource cashData = null;
-        //public delegate void OnDataLoadComplete<T>(bool success, T data);
-        private string dataPath = "";
-        //public static bool IsNull
-        //{
-        //    get { return instance == null; }
-        //}
+        public string DataName { get { return dataName; } }
 
-        //public static DataWarehouse G
-        //{
-        //    get
-        //    {
-        //        if (instance == null)
-        //        {
-        //            Debug.LogError("NullException Instance : " + typeof(DataWarehouse));
-        //            return null;
-        //        }
-        //        return instance;
-        //    }
-        //}
-
-        void OnDestroy()
+        public DataBox(string dataName)
         {
-            SavePendingData();
-            Debug.Log("OnDestroy1");
+            this.dataName = dataName;
+            dataSet = new HashSet<IDataResource>();
+            cashData = null;
         }
 
-        private void Awake()
+        public bool Add<T>(T data) where T : class, IDataResource, new()
         {
-            if (!isLoaded)
+            if(dataSet.Contains(data))
             {
-                DontDestroyOnLoad(this);
-                dataMap = new HashSet<IDataResource>();
-                pendingSaveList = new List<IDataResource>();
-                cashData = null;
-                instance = this;
-                isLoaded = true;
-#if EXAMPLE_JSON
-                dataPath = Path.Combine(@"C:\testFile\", "data");
-#else
-                dataPath = Path.Combine(Application.persistentDataPath, "data");
-#endif
-                Observable.TimerFrame(2000).Subscribe(_ =>
-                {
-                    SavePendingData();
-                });
+                return false;
             }
+
+            dataSet.Add(data);
+            return true;
         }
 
-        private void OnChange<T>(T data) where T : IDataResource
-        {
-            int length = pendingSaveList.Count;
-            for (int i = 0; i < length; i++)
-            {
-                if(pendingSaveList[i].ToString().Equals(data.ToString()))
-                {
-                    return;
-                }
-            }
-            pendingSaveList.Add(data);
-        }
-
-        private void SavePendingData()
-        {
-            int length = pendingSaveList.Count;
-            for (int i = 0; i < length; i++)
-            {
-                DataSave(pendingSaveList[i]);
-            }
-            pendingSaveList.Clear();
-        }
-
-        //실제 데이터는 아니고 RX용 데이터
         public T GetDataRX<T>() where T : class, IDataResource, new()
         {
-            if(cashData != null && cashData.GetType() == typeof(T))
+            if (cashData != null && cashData.GetType() == typeof(T))
             {
                 return (T)cashData;
             }
 
-            var iter = dataMap.GetEnumerator();
-            while(iter.MoveNext())
+            var iter = dataSet.GetEnumerator();
+            while (iter.MoveNext())
             {
-                if(iter.Current.GetType() == typeof(T))
+                if (iter.Current.GetType() == typeof(T))
                 {
                     cashData = iter.Current;
                     return (T)iter.Current;
                 }
             }
 
-            T data = new T();
-            dataMap.Add(data);
-            data.OnChange(OnChange);
-            cashData = data;
-            StartCoroutine(DataLoad<T>(data));
-
-            return data;
-        }
-
-        private IEnumerator DataLoad<T>(T data) where T : IDataResource
-        {
-            string dataString = null;
-            switch (data.GetDataPlace())
-            {
-                case EDataPlace.File:
-                    {
-                        dataString = FileDataLoad<T>(data);
-                        break;
-                    }
-            }
-
-            if(dataString != null)
-            {
-                JSONNode jnode = JSON.Parse(dataString);
-                data.SetJsonData(jnode);
-            }
-            else
-            {
-
-                DataSave(data);
-            }
-
-            yield return null;
-        }
-
-        private void DataSave<T>(T data) where T : IDataResource
-        {
-            switch (data.GetDataPlace())
-            {
-                case EDataPlace.File:
-                    {
-                        FileDataSave(data);
-                        break;
-                    }
-            }
-        }
-
-
-#region FILEIO
-
-        private string FileDataLoad<T>(T data)
-        {
-            //string dataPath = Path.Combine(Application.persistentDataPath, "data");
-
-            CheckDir();
-            string filePath = Path.Combine(dataPath, data.ToString());
-            if (File.Exists(filePath))
-            {
-                using (var fileStream = File.OpenRead(filePath))
-                {
-                    int fileLength = (int)fileStream.Length;
-                    byte[] fileData = new byte[fileLength];
-                    fileStream.Read(fileData, 0, fileLength);
-                    string fileString = Encoding.UTF8.GetString(fileData, 0, fileLength);
-                    fileStream.Close();
-                    return fileString;
-                }
-            }
             return null;
         }
 
-        private void FileDataSave<T>(T data) where T : IDataResource
+        public JSONNode GetJson()
         {
-            //string dataPath = Path.Combine(Application.persistentDataPath, "data");
+            JSONObject obj = new JSONObject();
+            var iter = dataSet.GetEnumerator();
+            while(iter.MoveNext())
+            {
+                obj.Add(iter.Current.ToString(), iter.Current.GetJsonData());
+            }
 
-            string dataString = data.GetJsonData();
-            byte[] dataByte = Encoding.UTF8.GetBytes(dataString);
-            int fileLength = dataByte.Length;
-            string filePath = Path.Combine(dataPath, data.ToString());
-            //if (File.Exists(filePath))
-            //{
-                using (StreamWriter fstream = File.CreateText(filePath))
-                {
-                    fstream.Write(dataString);
-                    fstream.Close();
-                }
-            //}
-            //else
-            //{
-            //    using (FileStream fstream = File.Create(filePath, fileLength))
-            //    {
-            //        fstream.Write(dataByte, 0, fileLength);
-            //    }
-            //}
+            return obj;
         }
 
-        private void CheckDir()
+        public void SetJson(JSONNode root)
         {
-            //string dataPath = Path.Combine(Application.persistentDataPath, "data");
-
-            if (!Directory.Exists(dataPath))
+            JSONObject obj = root.AsObject;
+            var iter = dataSet.GetEnumerator();
+            while (iter.MoveNext())
             {
-                Directory.CreateDirectory(dataPath);
+                var item = obj[iter.Current.ToString()];
+                if(item != null)
+                {
+                    iter.Current.SetJsonData(item);
+                }
             }
         }
-#endregion
-
 
     }
+
+    public class DataWarehouse : SingleMono<DataWarehouse>
+    {
+
+        private static bool isLoaded = false;
+        private DataBox currentbox = null;
+        private HashSet<DataBox> boxList = null;
+        private string dataPath = "";
+
+        void OnDestroy()
+        {
+            Debug.Log("OnDestroy1");
+        }
+
+        private void Init()
+        {
+            DontDestroyOnLoad(this);
+            instance = this;
+        }
+
+        private void Awake()
+        {
+            if (!isLoaded)
+            {
+                Init();
+                dataPath = Path.Combine(Application.persistentDataPath, "data");
+                isLoaded = true;
+            }
+        }
+
+
+
+        public void SaveFullData()
+        {
+
+        }
+
+        public void LoadFullData(string name = null)
+        {
+            string gameData = null;
+            if(name == null)
+            {
+                var fileArr = Directory.GetFiles(dataPath);
+                Array.Sort(fileArr, (x, y) =>
+                {
+                    return new CaseInsensitiveComparer().Compare(y, x);
+                });
+
+                if(fileArr.Length <= 0)
+                {
+                    //Load Error
+                    return;
+                }
+
+                gameData = ExDataCtr.GetFileData(Path.Combine(dataPath, fileArr[0]));
+
+            }
+            else
+            {
+                gameData = ExDataCtr.GetFileData(Path.Combine(dataPath, name));
+            }
+
+            if(gameData != null)
+            {
+                //Set Data
+            }
+        }
+
+        internal void SetCurrentBox(DataBox box)
+        {
+            currentbox = box;
+        }
+    }
+
 
 }

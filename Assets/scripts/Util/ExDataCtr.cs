@@ -35,18 +35,10 @@ public class ExDataCtr : MonoBehaviour {
 
 
     #region LOAD
-    public string GetData(string filepath, EReaderType type = EReaderType.File)
-    {
-        switch (type)
-        {
-            case EReaderType.File:
-                return GetFileData(filepath);
-            case EReaderType.HTTP:
-                return GetHTTPData(filepath);
-        }
-
-        return null;
-    }
+    //public string GetData(string filepath)
+    //{
+    //    return GetFileData(filepath);
+    //}
 
 
 
@@ -77,7 +69,7 @@ public class ExDataCtr : MonoBehaviour {
         yield return null;
     }
 
-    private static string GetFileData(string filepath)
+    public static string GetFileData(string filepath)
     {
         if (File.Exists(filepath))
         {
@@ -94,6 +86,8 @@ public class ExDataCtr : MonoBehaviour {
 
         return null;
     }
+
+    
 
     private string GetHTTPData(string webpath)
     {

@@ -76,40 +76,18 @@ public class CharacterPhysical
 public class CharacterData : IDataResource
 {
     public CharacterPhysical characterCur = null;
-    ChangeItem onChange = null;
     public CharacterData()
     {
-        
         characterCur = new CharacterPhysical();
-        characterCur.Ob.Subscribe(x =>
-        {
-            if(onChange != null)
-            {
-                onChange(this);
-            }
-        });
-    }
-    public EDataPlace GetDataPlace()
-    {
-        return EDataPlace.File;
     }
 
-    
-
-    public string GetJsonData()
+    public JSONNode GetJsonData()
     {
         JSONObject root = new JSONObject();
         JSONObject cc = characterCur.GetJNode();
         root.Add("CharacterCur", cc);
 
-        return root.ToString();
-    }
-
-    public void OnChange(ChangeItem changeFunc)
-    {
-        onChange = changeFunc;
-
-
+        return root;
     }
 
     public void SetJsonData(JSONNode node)

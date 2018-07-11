@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Database : SingleMono<Database> {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    CharacterBaseCollection characterDatas;
+
+    private void Awake()
+    {
+        characterDatas = new CharacterBaseCollection();
+        
+    }
+
+    public CharacterBase GetCharacter(int index)
+    {
+        return characterDatas.Get(index);
+    }
 }
