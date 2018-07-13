@@ -9,23 +9,12 @@ using Data;
 
 public sealed class DummyData : IDataResource{
     public ReactiveProperty<int> count = null;
-    ChangeItem onChange = null;
+   
     public DummyData()
     {
         count = new ReactiveProperty<int>(0);
-        count.DistinctUntilChanged().Subscribe(c =>
-        {
-            if(onChange != null)
-            {
-                onChange(this);
-            }
-        });
+   
     }
-    public EDataPlace GetDataPlace()
-    {
-        return EDataPlace.File;
-    }
-
     
 
     public JSONNode GetJsonData()
@@ -35,11 +24,6 @@ public sealed class DummyData : IDataResource{
         jobj.Add("count", jcount);
 
         return jobj;
-    }
-
-    public void OnChange(ChangeItem changeFunc)
-    {
-        this.onChange = changeFunc;
     }
 
     public void SetJsonData(JSONNode node)

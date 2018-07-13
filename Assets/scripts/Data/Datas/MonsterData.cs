@@ -5,15 +5,27 @@ using UnityEngine;
 using SimpleJSON;
 using System;
 
+using UniRx;
 public class MonsterData : IDataResource
 {
+    public ReactiveProperty<int> HP = null;
+
+    MonsterData(Monster.MonsterBase db)
+    {
+        
+    }
+
+
     public JSONNode GetJsonData()
     {
-        throw new NotImplementedException();
+        JSONObject obj = new JSONObject();
+        obj.Add("HP", new JSONNumber(HP.Value));
+        return obj;
     }
 
     public void SetJsonData(JSONNode node)
     {
-        throw new NotImplementedException();
+        var obj = node.AsObject;
+        HP.Value = obj["HP"].AsInt;
     }
 }

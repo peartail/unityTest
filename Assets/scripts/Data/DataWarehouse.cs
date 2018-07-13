@@ -30,7 +30,7 @@ namespace Data
             cashData = null;
         }
 
-        public bool Add<T>(T data) where T : class, IDataResource, new()
+        public bool Add<T>(T data) where T : class, IDataResource
         {
             if(dataSet.Contains(data))
             {
@@ -41,7 +41,7 @@ namespace Data
             return true;
         }
 
-        public T GetDataRX<T>() where T : class, IDataResource, new()
+        public T GetDataRX<T>() where T : class, IDataResource
         {
             if (cashData != null && cashData.GetType() == typeof(T))
             {
@@ -159,6 +159,11 @@ namespace Data
         internal void SetCurrentBox(DataBox box)
         {
             currentbox = box;
+        }
+
+        internal DataBox GetCurrentBox()
+        {
+            return currentbox;
         }
     }
 

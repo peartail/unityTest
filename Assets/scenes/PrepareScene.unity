@@ -116,7 +116,8 @@ NavMeshSettings:
 --- !u!1 &692457481
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 1951952952892590, guid: b3e7fa844e2778b4695695a9391bc1ef,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
@@ -132,7 +133,8 @@ GameObject:
 --- !u!114 &692457482
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 114282283243495826, guid: b3e7fa844e2778b4695695a9391bc1ef,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 692457481}
   m_Enabled: 1
@@ -143,7 +145,8 @@ MonoBehaviour:
 --- !u!4 &692457483
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 4618475934452854, guid: b3e7fa844e2778b4695695a9391bc1ef,
+    type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 692457481}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}

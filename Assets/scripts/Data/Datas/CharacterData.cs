@@ -76,9 +76,13 @@ public class CharacterPhysical
 public class CharacterData : IDataResource
 {
     public CharacterPhysical characterCur = null;
-    public CharacterData()
+    public CharacterBase baseData = null;
+    public CharacterData(CharacterBase baseData)
     {
+        this.baseData = baseData;
         characterCur = new CharacterPhysical();
+        characterCur.HP = baseData.HP;
+        characterCur.Energy = baseData.Energy;
     }
 
     public JSONNode GetJsonData()

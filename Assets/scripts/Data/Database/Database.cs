@@ -5,15 +5,21 @@ using UnityEngine;
 public class Database : SingleMono<Database> {
 
     CharacterBaseCollection characterDatas;
+    private void Init()
+    {
+        DontDestroyOnLoad(this);
+        instance = this;
+    }
 
     private void Awake()
     {
+        Init();
         characterDatas = new CharacterBaseCollection();
         
     }
 
-    public CharacterBase GetCharacter(int index)
+    public CharacterBase GetCharacter(CharacterBaseCollection.ECharacterType type)
     {
-        return characterDatas.Get(index);
+        return characterDatas.Get(type);
     }
 }

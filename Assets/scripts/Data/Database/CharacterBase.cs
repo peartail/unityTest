@@ -14,6 +14,8 @@ public class CharacterBase
     private int hp;
     [SerializeField]
     private int energy;
+
+    public string ClassName { get { return className; } }
     public int HP { get { return hp; } }
     public int Energy { get { return energy; } }
     public CharacterBase(string className, int hp, int energy)
@@ -46,17 +48,23 @@ public class CharacterBase
 
 public class CharacterBaseCollection
 {
+    public enum ECharacterType : int
+    {
+        Warrior = 0,
+        Mage = 1,
+    }
+
     private Dictionary<int, CharacterBase> characterMap = null;
     private bool isUpdated = false;
-    public CharacterBase Get(int index)
+    public CharacterBase Get(ECharacterType index)
     {
         if (!isUpdated)
         {
             Load();
         }
-        if (characterMap.ContainsKey(index))
+        if (characterMap.ContainsKey((int)index))
         {
-            return characterMap[index];
+            return characterMap[(int)index];
         }
 
         Debug.LogError("Not CharacterBase");
@@ -70,18 +78,26 @@ public class CharacterBaseCollection
 
     private void Load()
     {
-        string filedata = ExDataCtr.ETLoadData("Assets/Bundles/Data/CharacterBase");
-        JSONObject node = JSON.Parse(filedata).AsObject;
-        characterMap = new Dictionary<int, CharacterBase>();
-        var list = JsonToData(node).GetEnumerator();
-        int count = 0;
-        while (list.MoveNext())
+        string filedata = ExDataCtr.ETLoadData(CharacterBaseDB.filePath);
+        if(filedata != null)
         {
-            var data = list.Current;
-            characterMap[count++] = data;
-        }
+            JSONObject node = JSON.Parse(filedata).AsObject;
+            characterMap = new Dictionary<int, CharacterBase>();
+            var list = JsonToData(node).GetEnumerator();
+            int count = 0;
+            while (list.MoveNext())
+            {
+                var data = list.Current;
+                characterMap[count++] = data;
+            }
 
-        isUpdated = true;
+            isUpdated = true;
+        }
+        else
+        {
+            Debug.LogError("No FileData! " + filedata);
+        }
+        
     }
 
     #region EXTERNDATA

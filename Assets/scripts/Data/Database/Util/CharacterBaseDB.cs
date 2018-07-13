@@ -9,11 +9,12 @@ using UnityEngine;
 
 public class CharacterBaseDB : MonoBehaviour {
     public List<CharacterBase> characterList = new List<CharacterBase>();
-    public readonly static string filePath = "Assets/Bundles/Data/CharacterBase.dat";
+    public readonly static string filePath = "Assets/Bundles/Data/CharacterBase.dbdata";
     // Use this for initialization
     public void Save()
     {
         ExDataCtr.ETSaveData(filePath, CharacterBaseCollection.DataToJson(characterList));
+        
     }
 
     public void Load()

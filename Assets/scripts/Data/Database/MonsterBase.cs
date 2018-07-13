@@ -4,44 +4,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public class MonsterBase
+{
+    [SerializeField]
+    private string monsterName;
+    [SerializeField]
+    private string prefabName;
+    [SerializeField]
+    private int hp;
+
+
+    public int HP { get { return hp; } }
+    public MonsterBase(string mname, string prefname, int hp)
+    {
+        monsterName = mname;
+        prefabName = prefname;
+        this.hp = hp;
+    }
+
+    public JSONObject ToJson()
+    {
+        JSONObject obj = new JSONObject();
+        obj.Add("monsterName", new JSONString(monsterName));
+        obj.Add("prefabName", new JSONString(prefabName));
+        obj.Add("hp", new JSONNumber(hp));
+        return obj;
+    }
+
+    public static MonsterBase GetJson(JSONObject obj)
+    {
+        string cname = obj["monsterName"];
+        string fname = obj["prefabName"];
+        int hp = obj["hp"];
+
+        return new MonsterBase(cname, fname, hp);
+    }
+}
 
 namespace Monster
 {
-    [Serializable]
-    public class MonsterBase
-    {
-        [SerializeField]
-        private string monsterName;
-        [SerializeField]
-        private string prefabName;
-
-        public MonsterBase(string mname,string prefname)
-        {
-            monsterName = mname;
-            prefabName = prefname;
-        }
-
-        public JSONObject ToJson()
-        {
-            JSONObject obj = new JSONObject();
-            obj.Add("monsterName", new JSONString(monsterName));
-            obj.Add("prefabName", new JSONString(prefabName));
-
-            return obj;
-        }
-
-        public static MonsterBase GetJson(JSONObject obj)
-        {
-            string cname = obj["monsterName"];
-            string fname = obj["prefabName"];
-
-            return new MonsterBase(cname, fname);
-        }
-    }
+   
 
 
     public class MonsterBaseCollection
     {
+        public enum EMonsterType
+        {
+            Dummy1 = 0,
+        }
+
         Dictionary<int, MonsterBase> monsterMap = null;
         private bool isUpdated = false;
         public MonsterBase Get(int index)
@@ -61,7 +73,7 @@ namespace Monster
 
         private void Load()
         {
-            string filedata = ExDataCtr.ETLoadData("Assets/Bundles/Data/CharacterBase");
+            string filedata = ExDataCtr.ETLoadData("Assets/Bundles/Data/MonsterBase");
             JSONObject node = JSON.Parse(filedata).AsObject;
             monsterMap = new Dictionary<int, MonsterBase>();
             var list = JsonToData(node).GetEnumerator();
