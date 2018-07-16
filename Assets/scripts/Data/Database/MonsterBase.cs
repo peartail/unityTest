@@ -2,49 +2,61 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
-[Serializable]
-public class MonsterBase
+
+namespace Data
 {
-    [SerializeField]
-    private string monsterName;
-    [SerializeField]
-    private string prefabName;
-    [SerializeField]
-    private int hp;
 
 
-    public int HP { get { return hp; } }
-    public MonsterBase(string mname, string prefname, int hp)
+    [Serializable]
+    public class MonsterBase
     {
-        monsterName = mname;
-        prefabName = prefname;
-        this.hp = hp;
+        [SerializeField]
+        private string monsterName;
+        [SerializeField]
+        private string prefabName;
+        [SerializeField]
+        private int hp;
+        [SerializeField]
+        private int kind;
+
+        public int HP { get { return hp; } }
+        public string MonsterName { get { return monsterName; } }
+        public int MonsterKind { get { return kind; } }
+        public string MonsterPrefab {  get { return Path.Combine("Monster/", prefabName); } }
+        public MonsterBase(string mname, string prefname, int hp, int kind)
+        {
+            monsterName = mname;
+            prefabName = prefname;
+            this.hp = hp;
+            this.kind = kind;
+        }
+
+        public JSONObject ToJson()
+        {
+            JSONObject obj = new JSONObject();
+            obj.Add("monsterName", new JSONString(monsterName));
+            obj.Add("prefabName", new JSONString(prefabName));
+            obj.Add("hp", new JSONNumber(hp));
+            obj.Add("kind", new JSONNumber(kind));
+            return obj;
+        }
+
+        public static MonsterBase GetJson(JSONObject obj)
+        {
+            string cname = obj["monsterName"];
+            string fname = obj["prefabName"];
+            int hp = obj["hp"].AsInt;
+            int kind = obj["kind"].AsInt;
+
+            return new MonsterBase(cname, fname, hp, kind);
+        }
     }
 
-    public JSONObject ToJson()
-    {
-        JSONObject obj = new JSONObject();
-        obj.Add("monsterName", new JSONString(monsterName));
-        obj.Add("prefabName", new JSONString(prefabName));
-        obj.Add("hp", new JSONNumber(hp));
-        return obj;
-    }
 
-    public static MonsterBase GetJson(JSONObject obj)
-    {
-        string cname = obj["monsterName"];
-        string fname = obj["prefabName"];
-        int hp = obj["hp"];
 
-        return new MonsterBase(cname, fname, hp);
-    }
-}
-
-namespace Monster
-{
-   
 
 
     public class MonsterBaseCollection
@@ -54,7 +66,14 @@ namespace Monster
             Dummy1 = 0,
         }
 
+        public enum EMonsterKind
+        {
+            Slime = 1,
+        }
+
+
         Dictionary<int, MonsterBase> monsterMap = null;
+        Dictionary<int, MonsterBase> monsterKindMap = null;
         private bool isUpdated = false;
         public MonsterBase Get(int index)
         {
@@ -71,17 +90,35 @@ namespace Monster
             return null;
         }
 
+        public MonsterBase GetKind(int kind)
+        {
+            if (!isUpdated)
+            {
+                Load();
+            }
+
+            if (monsterKindMap.ContainsKey(kind))
+            {
+                return monsterKindMap[kind];
+            }
+
+            Debug.LogError("Not CharacterBase");
+            return null;
+        }
+
         private void Load()
         {
-            string filedata = ExDataCtr.ETLoadData("Assets/Bundles/Data/MonsterBase");
+            string filedata = ExDataCtr.ETLoadData(MonsterBaseDB.filePath);
             JSONObject node = JSON.Parse(filedata).AsObject;
             monsterMap = new Dictionary<int, MonsterBase>();
+            monsterKindMap = new Dictionary<int, MonsterBase>();
             var list = JsonToData(node).GetEnumerator();
             int count = 0;
             while (list.MoveNext())
             {
                 var data = list.Current;
                 monsterMap[count++] = data;
+                monsterKindMap[data.MonsterKind] = data;
             }
 
             isUpdated = true;
@@ -124,5 +161,7 @@ namespace Monster
     }
 
 
-}
 
+
+
+}

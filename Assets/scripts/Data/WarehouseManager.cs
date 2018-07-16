@@ -11,7 +11,7 @@ namespace Data
     public class WarehouseManager : IDisposable
     {
         bool disposed = false;
-        public void NewWarehouse()
+        public void NewWareHouse()
         {
             StringBuilder builder = new StringBuilder("saveData_");
             builder.Append(DateTime.Now.ToShortDateString());
@@ -24,11 +24,14 @@ namespace Data
             //Character 끌어오기
             var myChar = Database.G.GetCharacter(CharacterBaseCollection.ECharacterType.Warrior);
             
-            //Database.G.GetCharacter()
             CharacterData data = new CharacterData(myChar);
             box.Add(data);
-            //data.characterCur.HP
-            //box.Add();
+
+            var dummyMon = Database.G.GetMonstarDatas().GetKind(1);
+            MonsterData mondata = new MonsterData(dummyMon);
+            box.Add(mondata);
+
+            
             DataWarehouse.G.SetCurrentBox(box);
         }
 

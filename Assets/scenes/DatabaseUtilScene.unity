@@ -156,8 +156,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsters:
   - monsterName: Slime
-    prefabName: test
+    prefabName: MonsterDummy1
     hp: 150
+    kind: 1
 --- !u!1 &125972938
 GameObject:
   m_ObjectHideFlags: 0

@@ -479,7 +479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -780,4 +780,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageInfo: {fileID: 665735820}
+  logText: {fileID: 1286851788}
   CharInfoTxt: {fileID: 1310989965}
+  MonInfoTxt: {fileID: 904942373}

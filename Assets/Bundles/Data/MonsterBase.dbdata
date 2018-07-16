@@ -1,1 +1,1 @@
-{"arr":[{"monsterName":"Slime","prefabName":"test","hp":150}]}
+{"arr":[{"monsterName":"Slime","prefabName":"MonsterDummy1","hp":150,"kind":1}]}
