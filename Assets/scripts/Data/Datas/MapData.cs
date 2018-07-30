@@ -7,6 +7,12 @@ using System;
 
 public class MapData : IDataResource
 {
+    HashSet<LocationData> locationList;
+
+    public MapData()
+    {
+        locationList = new HashSet<LocationData>();
+    }
     public JSONNode GetJsonData()
     {
         throw new NotImplementedException();
