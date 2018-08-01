@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BSLine
+internal class BSLine
 {
     public enum Direction
     {
         Vertical,
         Horizontal,
     }
-
-    public int offset;
+    internal Direction direction;
+    internal int offset;
 }
 
 
@@ -20,17 +20,43 @@ public class BSpace
     BSLine line;
     BSpace fSpace;
     BSpace sSpace;
-    int size;
+    int width;
+    int height;
 
-    private BSpace()
+    private BSpace(int w,int h)
+    {
+        width = w;
+        height = h;
+    }
+
+    private void Split(BSLine.Direction dir)
+    {
+        line = new BSLine();
+        line.direction = dir;
+        int margin = 0;
+
+        if(dir == BSLine.Direction.Horizontal)
+        {
+            margin = height;
+        }
+        else
+        {
+            margin = width;
+        }
+
+        
+        
+    }
+
+    private void AddDimen()
     {
 
     }
 
-    public static BSpace NewBSPace(int size)
+    public static BSpace NewBSPace(int w,int h)
     {
-        BSpace space = new BSpace();
-        space.size = size;
+        BSpace space = new BSpace(w,h);
+        
         return space;
     }
 
