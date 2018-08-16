@@ -50,7 +50,7 @@ namespace DS
             while (iter.MoveNext())
             {
                 LinkLocation compare = iter.Current;
-                (compare.Locx - x) + (compare.Locy - y);
+                
                     
                 if (iter.Current.Locx == x && iter.Current.Locy == y)
                 {
