@@ -8,10 +8,8 @@ public class AssetBundleTeset : MonoBehaviour {
 
     [MenuItem("Bundles/Build AssetBundles")]
     static void BuildAllAssetBundles() {
-
-         var result = BuildPipeline.BuildAssetBundles("Assets/Bundles/Data", BuildAssetBundleOptions.None, BuildTarget.Android);
-
+        BuildPipeline.BuildAssetBundles("Assets/Bundles/Data", BuildAssetBundleOptions.None, BuildTarget.Android);
     }
 
-   
+
 }

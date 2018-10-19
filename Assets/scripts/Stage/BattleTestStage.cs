@@ -1,4 +1,4 @@
-﻿using Data;
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,13 +16,6 @@ public class BattleTestStage : MonoBehaviour {
         YourTurn,
         EndStage,
     }
-
-
-    private CharacterData myCharData = null;
-    private MonsterData monData = null;
-    public CharacterData MyCharData {  get { return myCharData; } }
-    public MonsterData MonData { get { return monData; } }
-
     #region Event
     Subject<string> logSubject = new Subject<string>();
     public IObservable<string> logOb { get { return logSubject.AsObservable(); } }
@@ -33,27 +26,7 @@ public class BattleTestStage : MonoBehaviour {
     bool IsBattlePrepared = false;
 	// Use this for initialization
 	void Awake () {
-        DataBox box = null;
 
-        using (var data = new WarehouseManager())
-        {
-            data.NewWareHouse();
-            box = data.CurrentBox;
-            if(box != null)
-            {
-                myCharData = box.GetDataRX<CharacterData>();
-                monData = box.GetDataRX<MonsterData>();
-
-                using (AssetLoader loader = new AssetLoader())
-                {
-                    var obj = loader.LoadAsset<UnityEngine.Object>(monData.BaseData.MonsterPrefab);
-                    var monPrefab = (GameObject)GameObject.Instantiate(obj);
-                    monPrefab.transform.SetParent(transform, false);
-                }
-            }
-
-            IsBattlePrepared = true;
-        }
 	}
 
     private void Start()
@@ -79,12 +52,12 @@ public class BattleTestStage : MonoBehaviour {
     {
 
     }
-    
+
     private void AddLog(string log)
     {
         LogText.AppendFormat(log);
         LogText.Append("\n");
         logSubject.OnNext(LogText.ToString());
-        
-    }    
+
+    }
 }

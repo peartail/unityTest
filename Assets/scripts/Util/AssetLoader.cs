@@ -8,14 +8,23 @@ public class AssetLoader : IDisposable
 {
     bool disposed = false;
     private static readonly string rootPath = "Assets/Bundles/";
+    private static Queue<GameObject> cachePrefab;
+    private static readonly int MaxCacheSize = 10;
 	public T LoadAsset<T>(string path) where T : UnityEngine.Object
     {
+
 #if UNITY_EDITOR
         string relpath = Path.Combine(rootPath, path);
-        return UnityEditor.AssetDatabase.LoadAssetAtPath<T>(relpath);
+        T result = (T)UnityEditor.AssetDatabase.LoadAssetAtPath(relpath, typeof(T));
+        return GameObject.Instantiate(result);
 #else
         return null;
 #endif
+
+    }
+
+    private void SaveCacheAsset<T>(string path,T data) where T : UnityEngine.Object
+    {
 
     }
 
