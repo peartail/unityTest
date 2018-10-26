@@ -5,10 +5,9 @@ using UnityEngine;
 public class BattleStageSpawner : MonoBehaviour {
 
     public Transform rootTransform;
+    private GameObject myCharacter = null;
 	// Use this for initialization
 	void Start () {
-        SpawnBattleStage();
-
     }
 
 	// Update is called once per frame
@@ -18,8 +17,24 @@ public class BattleStageSpawner : MonoBehaviour {
 
 	}
 
+    private static string myCharacterPath = "Object/MyCharacter.prefab";
     private static string battleScenePath = "Field/BattleStage.prefab";
-    void SpawnBattleStage()
+
+    //내 케릭터 로드
+    public void SpawnMyCharacter()
+    {
+        using (AssetLoader loader = new AssetLoader())
+        {
+            var asset = loader.LoadAsset<GameObject>(myCharacterPath);
+            if(asset != null)
+            {
+                myCharacter = asset;
+            }
+        }
+    }
+
+
+    public void SpawnBattleStage()
     {
         using (AssetLoader loader = new AssetLoader())
         {
@@ -30,6 +45,5 @@ public class BattleStageSpawner : MonoBehaviour {
             }
 
         }
-
     }
 }

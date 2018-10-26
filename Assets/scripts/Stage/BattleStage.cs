@@ -27,15 +27,11 @@ public class BattleStage : MonoBehaviour {
     TurnManager manager = null;
 	// Use this for initialization
 	void Start () {
-
+        InitNormalBattle();
 	}
 
-	// Update is called once per frame
-	void Update () {
 
-	}
-
-    private void Init()
+    private void InitNormalBattle()
     {
         manager = new TurnManager();
 

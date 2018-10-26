@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using System;
 using System.IO;
 
@@ -8,7 +6,7 @@ public class AssetLoader : IDisposable
 {
     bool disposed = false;
     private static readonly string rootPath = "Assets/Bundles/";
-    private static Queue<GameObject> cachePrefab;
+    private static Queue<UnityEngine.GameObject> cachePrefab;
     private static readonly int MaxCacheSize = 10;
 	public T LoadAsset<T>(string path) where T : UnityEngine.Object
     {
@@ -16,7 +14,7 @@ public class AssetLoader : IDisposable
 #if UNITY_EDITOR
         string relpath = Path.Combine(rootPath, path);
         T result = (T)UnityEditor.AssetDatabase.LoadAssetAtPath(relpath, typeof(T));
-        return GameObject.Instantiate(result);
+        return UnityEngine.Object.Instantiate(result);
 #else
         return null;
 #endif
