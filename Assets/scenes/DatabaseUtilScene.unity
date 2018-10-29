@@ -151,14 +151,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 30762669}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cc33cb2334a8aa478d0fe2b99650384, type: 3}
+  m_Script: {fileID: 11500000, guid: 17bc40ad774541f4fa7287de23160d04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsters:
-  - monsterName: Slime
-    prefabName: MonsterDummy1
-    hp: 150
-    kind: 1
 --- !u!1 &125972938
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,7 +168,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!114 &125972939
 MonoBehaviour:
@@ -183,16 +178,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 125972938}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 813980484d05b4b4d88f99e97d39c7c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fb4c95afa773ee42bb01665ef3ab0ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   characterList:
-  - className: Warrior
+  - name: Warrior
     hp: 100
-    energy: 10
-  - className: Mage
-    hp: 80
-    energy: 12
+    atk: 1
+    def: 1
+  - name: 
+    hp: 0
+    atk: 0
+    def: 0
 --- !u!4 &125972940
 Transform:
   m_ObjectHideFlags: 0
@@ -250,7 +247,8 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114556662158996332, guid: c04f3952e65eccc48ab0178f75711536, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: c04f3952e65eccc48ab0178f75711536, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1755923344
