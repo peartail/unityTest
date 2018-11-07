@@ -18,7 +18,7 @@ public class testUI : MonoBehaviour {
 
     public void BtnSpawnChar()
     {
-        spawner.SpawnMyCharacter();
+        //spawner.SpawnMyCharacter();
     }
 
     public void BtnSpawnBS()

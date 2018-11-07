@@ -24,12 +24,30 @@ class TurnManager
 
 public class BattleStage : MonoBehaviour {
 
+    private Transform StageRoot = null;
     TurnManager manager = null;
-	// Use this for initialization
-	void Start () {
-        InitNormalBattle();
+
+    private void Awake()
+    {
+        StageRoot = GetComponent<Transform>();
+    }
+
+    // Use this for initialization
+    void Start () {
+
 	}
 
+    //내 케릭 입장
+    public void IamJoin(GameObject ichar)
+    {
+        ichar.transform.SetParent(StageRoot,false);
+    }
+
+    //적 입장
+    public void EnemyJoin(GameObject enemychar)
+    {
+        enemychar.transform.SetParent(StageRoot, false);
+    }
 
     private void InitNormalBattle()
     {

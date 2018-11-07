@@ -42,6 +42,12 @@ public class BattleStageSpawner : MonoBehaviour {
             if(asset != null)
             {
                 asset.transform.SetParent(rootTransform, false);
+                BattleStage bs = asset.GetComponent<BattleStage>();
+                if(bs != null)
+                {
+                    var mychar = loader.LoadAsset<GameObject>(myCharacterPath);
+                    bs.IamJoin(mychar);
+                }
             }
 
         }
