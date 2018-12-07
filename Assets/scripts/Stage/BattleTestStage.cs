@@ -5,6 +5,7 @@ using UnityEngine;
 
 using UniRx;
 using System.Text;
+using System;
 
 public class BattleTestStage : MonoBehaviour {
 
@@ -60,4 +61,5 @@ public class BattleTestStage : MonoBehaviour {
         logSubject.OnNext(LogText.ToString());
 
     }
+
 }

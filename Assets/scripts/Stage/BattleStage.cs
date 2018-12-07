@@ -5,37 +5,41 @@ using UnityEngine;
 using UniRx;
 
 
-enum TurnState
-{
-    MyTurn = 1,
-    MonsterTurn = 2,
-}
 
-class TurnManager
-{
-    private List<TurnState> PriorityList = null;
-
-    internal void Init(List<TurnState> list)
-    {
-        PriorityList = list;
-    }
-
-}
 
 public class BattleStage : MonoBehaviour {
 
     private Transform StageRoot = null;
-    TurnManager manager = null;
 
     private void Awake()
     {
+
         StageRoot = GetComponent<Transform>();
     }
 
     // Use this for initialization
     void Start () {
-
+        TestMemberJoin();
+        TestBattleUI();
 	}
+
+    void TestMemberJoin()
+    {
+        var mywar = GameObjectManager.I.SpawnMyWarrior();
+        mywar.gameObject.transform.SetParent(StageRoot, false);
+
+        var monslime = GameObjectManager.I.SpawnMonsterSlime();
+        monslime.gameObject.transform.SetParent(StageRoot, false);
+
+        GameDataManager.I.GetMonsterData();
+    }
+
+    void TestBattleUI()
+    {
+        var testUI = UIManager.GetUI<battleTestDlg>("battletestDlg");
+
+        UIManager.I.OpenUI(testUI);
+    }
 
     //내 케릭 입장
     public void IamJoin(GameObject ichar)
@@ -51,11 +55,6 @@ public class BattleStage : MonoBehaviour {
 
     private void InitNormalBattle()
     {
-        manager = new TurnManager();
 
-        List<TurnState> list = new List<TurnState>();
-        list.Add(TurnState.MyTurn);
-        list.Add(TurnState.MonsterTurn);
-        manager.Init(list);
     }
 }

@@ -1,16 +1,28 @@
-﻿using System.Collections;
+﻿using DBUtil;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 public class MonsterBaseDB : MonoBehaviour {
+    public List<MonsterBaseData> monsterList;
 
+
+    private static readonly string filePath = "Assets/Bundles/Data/MonsterBase.dbdata";
     public void Save()
     {
+        WrapperList<MonsterBaseData> item = new WrapperList<MonsterBaseData>(monsterList);
+
+        string jsonData = JsonUtility.ToJson(item);
+        File.WriteAllText(filePath, jsonData);
     }
 
     public void Load()
     {
+        string resultData = File.ReadAllText(filePath);
+        var list = JsonUtility.FromJson<WrapperList<MonsterBaseData>>(resultData);
+        monsterList = list.data;
     }
 
 

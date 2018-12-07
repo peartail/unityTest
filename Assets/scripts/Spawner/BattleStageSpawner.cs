@@ -25,7 +25,7 @@ public class BattleStageSpawner : MonoBehaviour {
     {
         using (AssetLoader loader = new AssetLoader())
         {
-            var asset = loader.LoadAsset<GameObject>(myCharacterPath);
+            var asset = loader.LoadAssetInstance<GameObject>(myCharacterPath);
             if(asset != null)
             {
                 myCharacter = asset;
@@ -38,14 +38,14 @@ public class BattleStageSpawner : MonoBehaviour {
     {
         using (AssetLoader loader = new AssetLoader())
         {
-            var asset = loader.LoadAsset<GameObject>(battleScenePath);
+            var asset = loader.LoadAssetInstance<GameObject>(battleScenePath);
             if(asset != null)
             {
                 asset.transform.SetParent(rootTransform, false);
                 BattleStage bs = asset.GetComponent<BattleStage>();
                 if(bs != null)
                 {
-                    var mychar = loader.LoadAsset<GameObject>(myCharacterPath);
+                    var mychar = loader.LoadAssetInstance<GameObject>(myCharacterPath);
                     bs.IamJoin(mychar);
                 }
             }

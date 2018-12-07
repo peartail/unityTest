@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DBUtil;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -6,16 +7,6 @@ using UnityEngine;
 
 public class CharacterBaseDB : MonoBehaviour {
     public List<CharacterBaseData> characterList;
-
-    public class WrapperList<T> where T : class
-    {
-        public List<T> data;
-        public WrapperList(List<T> d)
-        {
-            data = d;
-        }
-
-    }
 
     private static readonly string filePath = "Assets/Bundles/Data/CharacterBase.dbdata";
     // Use this for initialization
