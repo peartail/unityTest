@@ -1,12 +1,15 @@
-﻿using System;
+﻿using DBUtil;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 [Serializable]
-public class CharacterBaseData
+public struct CharacterBaseData
 {
+    [SerializeField]
+    public CharacterBase.CharacterKind kind;
     [SerializeField]
     public string name;
     [SerializeField]
@@ -18,15 +21,44 @@ public class CharacterBaseData
 }
 
 
-public class CharacterBase : MonoBehaviour {
+public static class CharacterBase {
+    public enum CharacterKind
+    {
+        Boxer = 1,
+        Unded = 2,
+    }
+    private static List<CharacterBaseData> characters = null;
+    private static readonly string characterdb = "Data/CharacterBase.bytes";
+    private static bool isLoad = false;
+    private static void Load()
+    {
+        if (isLoad)
+            return;
 
-	// Use this for initialization
-	void Start () {
+        using (var loader = new AssetLoader())
+        {
+            TextAsset asset = loader.Load<TextAsset>(characterdb);
+            WrapperList<CharacterBaseData> wdata = JsonUtility.FromJson<WrapperList<CharacterBaseData>>(asset.text);
+            characters = wdata.data;
+            isLoad = true;
+        }
+    }
 
-	}
+    public static CharacterBaseData Get(CharacterKind index)
+    {
+        Load();
+        return characters.Find((x) =>
+        {
+            return x.kind == index;
+        });
+    }
 
-	// Update is called once per frame
-	void Update () {
-
-	}
+    public static CharacterBaseData Find(string name)
+    {
+        Load();
+        return characters.Find((x) =>
+        {
+            return x.name == name;
+        });
+    }
 }

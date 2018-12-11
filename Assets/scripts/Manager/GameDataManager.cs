@@ -22,15 +22,15 @@ public class GameDataManager : MonoBehaviour {
 
     Dictionary<eData, TextAsset> textCaching;
 
-    private static readonly string monsterdb = "Data/MonsterBase.bytes";
-    private static readonly string characterdb = "Data/CharacterBase.bytes";
-    public MonsterBaseData GetMonsterData()
+  
+    
+    public TextAsset GetData(string path)
     {
         using (AssetLoader loader = new AssetLoader())
         {
-            var asset = loader.Load<TextAsset>(monsterdb);
+            var asset = loader.Load<TextAsset>(path);
+            return asset;
         }
-
-        return null;
     }
+   
 }

@@ -9,7 +9,7 @@ public class MonsterBaseDB : MonoBehaviour {
     public List<MonsterBaseData> monsterList;
 
 
-    private static readonly string filePath = "Assets/Bundles/Data/MonsterBase.dbdata";
+    private static readonly string filePath = "Assets/Bundles/Data/MonsterBase.bytes";
     public void Save()
     {
         WrapperList<MonsterBaseData> item = new WrapperList<MonsterBaseData>(monsterList);

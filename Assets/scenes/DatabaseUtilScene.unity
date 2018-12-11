@@ -155,7 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterList:
-  - name: slime
+  - index: 1
+    name: slime
     hp: 5
 --- !u!1 &125972938
 GameObject:
@@ -185,14 +186,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterList:
-  - name: Warrior
+  - kind: 1
+    name: Boxer
     hp: 100
     atk: 1
     def: 1
-  - name: 
-    hp: 0
-    atk: 0
-    def: 0
+  - kind: 2
+    name: Unded
+    hp: 50
+    atk: 2
+    def: 1
 --- !u!4 &125972940
 Transform:
   m_ObjectHideFlags: 0

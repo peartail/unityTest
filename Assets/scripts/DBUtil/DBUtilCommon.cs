@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DBUtil
 {
-    public class WrapperList<T> where T : class
+    public class WrapperList<T> where T : struct
     {
         public List<T> data;
         public WrapperList(List<T> d)

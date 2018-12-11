@@ -1,1 +1,1 @@
-{"data":[{"name":"Warrior","hp":100,"atk":1,"def":1},{"name":"","hp":0,"atk":0,"def":0}]}
+{"data":[{"kind":1,"name":"Boxer","hp":100,"atk":1,"def":1},{"kind":2,"name":"Unded","hp":50,"atk":2,"def":1}]}

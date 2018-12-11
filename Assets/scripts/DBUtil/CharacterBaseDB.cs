@@ -8,7 +8,7 @@ using UnityEngine;
 public class CharacterBaseDB : MonoBehaviour {
     public List<CharacterBaseData> characterList;
 
-    private static readonly string filePath = "Assets/Bundles/Data/CharacterBase.dbdata";
+    private static readonly string filePath = "Assets/Bundles/Data/CharacterBase.bytes";
     // Use this for initialization
     public void Save()
     {
