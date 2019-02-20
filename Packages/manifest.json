@@ -1,4 +1,8 @@
 {
-	"dependencies": {
-	}
+  "dependencies": {
+    "com.unity.entities": "0.0.12-preview.8",
+    "com.unity.burst": "0.2.4-preview.20",
+    "com.unity.collections": "0.0.9-preview.2",
+    "com.unity.jobs": "0.0.7-preview.2"
+  }
 }
