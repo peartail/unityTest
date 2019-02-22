@@ -293,7 +293,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114563355597603440}
-        m_MethodName: SettingActor
+        m_MethodName: AddPosion
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -451,7 +451,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: AT
 --- !u!114 &114416986260242276
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -591,7 +591,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114563355597603440}
-        m_MethodName: SettingActor
+        m_MethodName: MonAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -668,7 +668,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Shield
 --- !u!114 &114563355597603440
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -684,6 +684,7 @@ MonoBehaviour:
   txtMyActName: {fileID: 114535856248398752}
   txtMonHP: {fileID: 114042149300366542}
   txtMonName: {fileID: 114416986260242276}
+  stage: {fileID: 0}
 --- !u!114 &114664993000351620
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -724,7 +725,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114563355597603440}
-        m_MethodName: SettingActor
+        m_MethodName: MyAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -795,7 +796,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: MonAt
 --- !u!114 &114913824673410034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -836,7 +837,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114563355597603440}
-        m_MethodName: SettingActor
+        m_MethodName: PutShield
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1029,7 +1030,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -126, y: -371}
+  m_AnchoredPosition: {x: 101, y: -211}
   m_SizeDelta: {x: 160, y: 61.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224496455804527434
@@ -1084,7 +1085,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -126, y: -371}
+  m_AnchoredPosition: {x: 101, y: -289}
   m_SizeDelta: {x: 160, y: 61.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224616800259363756
@@ -1144,7 +1145,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -126, y: -371}
+  m_AnchoredPosition: {x: 101, y: -371}
   m_SizeDelta: {x: 160, y: 61.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224816712929335148

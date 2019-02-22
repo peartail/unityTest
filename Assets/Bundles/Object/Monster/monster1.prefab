@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4954654103886912}
   - component: {fileID: 114821332395116884}
   - component: {fileID: 65303966239510746}
+  - component: {fileID: 114463596956853556}
   m_Layer: 0
   m_Name: monster1
   m_TagString: Untagged
@@ -53,6 +54,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114463596956853556
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1148384675594954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140e2f47644c6ad4ea6e62106ebcde2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114821332395116884
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -64,3 +76,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a05fec091efdebb4195cb7ff2390bd4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthCtr: {fileID: 114463596956853556}

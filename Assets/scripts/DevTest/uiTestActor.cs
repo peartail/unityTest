@@ -3,49 +3,87 @@ using System.Collections.Generic;
 using UnityEngine;
 using DDatas;
 using UnityEngine.UI;
+using UniRx;
 
 public class uiTestActor : MonoBehaviour {
 
-    public Transform parentTransform;
     public Text txtMyActHP;
     public Text txtMyActName;
     public Text txtMonHP;
     public Text txtMonName;
+
+    public battleStage stage;
+
     // Use this for initialization
     void Start () {
-
+        BindObject();
 	}
 
-    ActTraveler actor = null;
-    Monster1 mon = null;
-    public void SettingActor()
+    public void BindObject()
     {
-        var actor = ObjectLoadMgr.LoadAsset<ActTraveler>("ActTraveler");
-        actor.transform.SetParent(parentTransform);
+        actor = stage.GetMyActor;
+        mon = stage.GetMonster;
+        actorHelthCtr = actor.healthCtr;
+        monHelthCtr = mon.healthCtr;
 
-        mon = ObjectLoadMgr.LoadAsset<Monster1>("Monster/Monster1");
-        mon.transform.SetParent(parentTransform);
-        //mon = DataMonsterBox.GetData(DataMonsterKind.Monster1);
+        actor?.InfoOb.Subscribe(SetMyActorText);
+        mon?.GetOb.Subscribe(SetMonText);
+    }
 
-        //txtMyActHP.text = string.Format("{0}/{1}", actor.Hp,actor.MaxHp);
-        //txtMyActName.text = actor.Actorname;
+    private ActTraveler actor = null;
+    private Monster1 mon = null;
+    private HealthCtr actorHelthCtr = null;
+    private HealthCtr monHelthCtr = null;
 
-        //txtMonHP.text = string.Format("{0}/{1}", mon.hp, mon.maxHp);
-        //txtMonName.text = mon.monName;
+    private void SetMyActorText(DataMyActor act)
+    {
+        if(act.Shield > 0)
+        {
+            txtMyActHP.text = string.Format("{0}/{1} + {2}", act.Hp, act.MaxHp, act.Shield);
+        }
+        else
+        {
+            txtMyActHP.text = string.Format("{0}/{1}", act.Hp, act.MaxHp);
+        }
+
+        txtMyActName.text = act.Actorname;
+    }
+
+    private void SetMonText(DataMonster mon)
+    {
+        if (mon.Shield > 0)
+        {
+            txtMonHP.text = string.Format("{0}/{1} + {2}", mon.hp, mon.maxHp, mon.Shield);
+        }
+        else
+        {
+            txtMonHP.text = string.Format("{0}/{1}", mon.hp, mon.maxHp);
+        }
+
+
+        txtMonName.text = mon.monName;
+    }
+
+    public void AddPosion()
+    {
+        DamagePosion posion = ObjectLoadMgr.LoadAsset<DamagePosion>("Damage/DamagePosion");
+        posion.transform.SetParent(actor.transform);
+        posion.Bind(actor.healthCtr);
+        posion.StartPosion(3, 5);
     }
 
     public void MyAttack()
     {
-
+        monHelthCtr?.PercentDamanged(0.15f,HealthCtr.PercentDamageType.CalcMaxHP);
     }
 
     public void MonAttack()
     {
-
+        actorHelthCtr?.PercentDamanged(0.1f,HealthCtr.PercentDamageType.CalcCurrentHP);
     }
 
     public void PutShield()
     {
-
+        actorHelthCtr?.AddShield(7);
     }
 }

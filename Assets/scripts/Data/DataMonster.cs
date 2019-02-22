@@ -30,6 +30,8 @@ namespace DDatas
         public string monDesc;
         public int hp;
         public int maxHp;
+
+        public int Shield;
         public int InitHP { set { hp = maxHp = value; } }
         public List<DataMonsterSkillInfo> skills;
     }
@@ -56,7 +58,7 @@ namespace DDatas
         void InitMonster()
         {
             monsterDatas = new List<DataMonster>();
-            monsterDatas.Add(new DataMonster() { id = (int)DataMonsterKind.Monster1, monName = "Monster1", monDesc = "Monster1", InitHP = 100 });
+            monsterDatas.Add(new DataMonster() { id = (int)DataMonsterKind.Monster1, monName = "Monster1", monDesc = "Monster1", InitHP = 100 ,Shield = 11});
             isLoaded = true;
         }
 
