@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AssetLoader : IDisposable
 {
-    bool disposed = false;
+
     private static readonly string rootPath = "Assets/Bundles/";
     private static Queue<UnityEngine.GameObject> cachePrefab;
     private static readonly int MaxCacheSize = 10;
@@ -42,6 +42,7 @@ public class AssetLoader : IDisposable
 
     }
 
+    bool disposed = false;
     public void Dispose()
     {
         Dispose(true);

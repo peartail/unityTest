@@ -14,74 +14,93 @@ public class HealthCtr : MonoBehaviour {
     //Actor가 여기에 상태를 주고 값을 변경해줘야한다.
     //이친구가 다른 사람에게 감소에 대한 수치를 보내줘야 한다.
 
+    public enum HealthStatus
+    {
+        Poison,
+        Fire,
+    }
 
+    private Dictionary<HealthStatus, GameObject> healthStat;
+
+
+    private bool isInstanceShield = false;
+    private ECSInstanceShield instanceShield = null;
     public void InitHealth(ReactiveProperty<int> shield,ReactiveProperty<int> hp,int MaxHP)
     {
+        healthStat = new Dictionary<HealthStatus, GameObject>();
         rxShield = shield;
         rxHp = hp;
         this.MaxHP = MaxHP;
     }
 
+    public GameObject GetHealthStat(HealthStatus stat)
+    {
+        if (healthStat.ContainsKey(stat))
+        {
+            return healthStat[stat];
+        }
+        return null;
+    }
+
+    public void SetStat(HealthStatus stat, GameObject obj)
+    {
+        healthStat[stat] = obj;
+    }
+
+    public void ClearStat(HealthStatus stat)
+    {
+        healthStat[stat] = null;
+    }
+
+
+
+    public int GetShield()
+    {
+        return rxShield.Value;
+    }
 
     public void AddShield(int shield)
     {
-        rxShield.Value = Mathf.Max(0, rxShield.Value + shield);
+        rxShield.Value = rxShield.Value + shield;
     }
 
-    public void RestoreHP(int restore)
+    public int DamageShield(int value)
     {
-        rxHp.Value = Mathf.Min(rxHp.Value + restore, MaxHP);
-    }
 
 
-    public void Damaged(int damage)
-    {
         int shield = rxShield.Value;
-        int hp = rxHp.Value;
-        //보호막이 있다면 보막부터
-        int remainDamage = damage;
-        if (shield > 0)
-        {
-            remainDamage = Mathf.Max(0, remainDamage - shield);
-            //데미지가 더 높다
-            if (remainDamage > 0)
-            {
-                rxShield.Value = 0;
-            }
-            //낮거나 같은경우 데미지 흡수
-            else
-            {
-                rxShield.Value -= damage;
-            }
-        }
+        int realValue = shield - value;
+        rxShield.Value = Mathf.Max(0, realValue);
+        return realValue;
+    }
 
-        rxHp.Value = Mathf.Max(0, hp - remainDamage);
-        if (rxHp.Value == 0)
+    public int GetHP()
+    {
+        return rxHp.Value;
+    }
+
+    public void CureHP(int value)
+    {
+        int hp = rxHp.Value;
+        rxHp.Value = Mathf.Min(MaxHP, hp + value);
+    }
+
+    public int DamageHP(int value)
+    {
+        int hp = rxHp.Value;
+        int realValue = hp - value;
+        rxHp.Value = Mathf.Max(0, realValue);
+        if (realValue <= 0)
         {
             isDie = true;
         }
+        return realValue;
     }
 
-    public enum PercentDamageType
+    public delegate void CustomDamageFunc(ReactiveProperty<int> hp, ReactiveProperty<int> shield, int MaxHP);
+    public void CustomDamage(CustomDamageFunc func)
     {
-        CalcMaxHP,
-        CalcCurrentHP,
+        func(rxHp,rxShield,MaxHP);
     }
 
-    public void PercentDamanged(float percent,PercentDamageType type)
-    {
-        float baseHP = 0;
-        if (type == PercentDamageType.CalcMaxHP)
-        {
-            baseHP = (float)MaxHP;
-        }
-        else
-        {
-            baseHP = (float)rxHp.Value;
-        }
-
-        float damageHP = baseHP* percent;
-
-        Damaged((int)damageHP);
-    }
 }

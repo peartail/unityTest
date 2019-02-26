@@ -66,24 +66,41 @@ public class uiTestActor : MonoBehaviour {
 
     public void AddPosion()
     {
-        DamagePosion posion = ObjectLoadMgr.LoadAsset<DamagePosion>("Damage/DamagePosion");
-        posion.transform.SetParent(actor.transform);
-        posion.Bind(actor.healthCtr);
-        posion.StartPosion(3, 5);
+        using (NormalAttackHelper helper = new NormalAttackHelper(actorHelthCtr))
+        {
+            helper.PoisonAttack(3, 5);
+        }
+    }
+
+    public void AddFire()
+    {
+        using (NormalAttackHelper helper = new NormalAttackHelper(actorHelthCtr))
+        {
+            helper.FireAttack(3, 5);
+        }
     }
 
     public void MyAttack()
     {
-        monHelthCtr?.PercentDamanged(0.15f,HealthCtr.PercentDamageType.CalcMaxHP);
+        using (NormalAttackHelper helper = new NormalAttackHelper(monHelthCtr))
+        {
+            helper.NormalAttack(15);
+        }
+
     }
+
 
     public void MonAttack()
     {
-        actorHelthCtr?.PercentDamanged(0.1f,HealthCtr.PercentDamageType.CalcCurrentHP);
+        using (NormalAttackHelper helper = new NormalAttackHelper(actorHelthCtr))
+        {
+            helper.NormalAttack(10);
+        }
     }
 
     public void PutShield()
     {
         actorHelthCtr?.AddShield(7);
     }
+
 }

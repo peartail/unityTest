@@ -1,13 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamagePosion : MonoBehaviour {
 
+public class DamagePoison : MonoBehaviour {
     public HealthCtr healthCtr = null;
     public void Bind(HealthCtr ctr)
     {
+        transform.SetParent(ctr.gameObject.transform);
         healthCtr = ctr;
+        healthCtr.SetStat(HealthCtr.HealthStatus.Poison,gameObject);
     }
 
     private int PoisonDamage = 0;
@@ -29,7 +32,14 @@ public class DamagePosion : MonoBehaviour {
         {
             yield return new WaitForSeconds(1.0f);
 
-            healthCtr.Damaged(PoisonDamage);
+            int currenthp = healthCtr.DamageHP(PoisonDamage);
+
+            if (currenthp <= 0)
+            {
+                isCure = true;
+                break;
+            }
+
             PoisonTime--;
 
             if(PoisonTime <= 0)
@@ -42,11 +52,14 @@ public class DamagePosion : MonoBehaviour {
 
     void CurePosion()
     {
+        healthCtr.ClearStat(HealthCtr.HealthStatus.Poison);
+        healthCtr = null;
         Destroy(gameObject);
     }
 
-    void AddPosion()
+    public void AddEffect(int dmg,int time)
     {
-
+        PoisonDamage += dmg;
+        PoisonTime = Mathf.Max(PoisonTime, time);
     }
 }

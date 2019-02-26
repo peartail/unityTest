@@ -4,6 +4,9 @@ using UnityEngine;
 
 using UniRx;
 using DDatas;
+using Unity.Entities;
+using System;
+
 public class Monster1 : MonoBehaviour {
     private ReactiveProperty<DataMonster> rxMonsterData = null;
     public HealthCtr healthCtr = null;
@@ -54,4 +57,16 @@ public class Monster1 : MonoBehaviour {
 
     }
 
+}
+
+public class Monster1System : ComponentSystem
+{
+    struct Components
+    {
+        public Monster1 monster;
+    }
+
+    protected override void OnUpdate()
+    {
+    }
 }
