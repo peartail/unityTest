@@ -9,6 +9,9 @@ public class LocationRestore : MonoBehaviour {
     private static readonly float MIN_DISTANCE = 0.3f;
     private float startTime;
     private float distance;
+    private float duringTime;
+    bool isRestoring = false;
+    public bool IsRestoring { get { return isRestoring; } }
 	// Use this for initialization
 	void Start () {
         originposition = transform.position ;
@@ -18,12 +21,14 @@ public class LocationRestore : MonoBehaviour {
     public void MoveRelease()
     {
         startTime = Time.time;
+        duringTime = 0f;
         distance = Vector3.Distance(transform.position, originposition);
-        StartCoroutine(MoveOriginPos());
+        isRestoring = true;
+        //StartCoroutine(CMoveOriginPos());
     }
 
 
-    private IEnumerator MoveOriginPos()
+    private IEnumerator CMoveOriginPos()
     {
         while(true)
         {
@@ -50,4 +55,31 @@ public class LocationRestore : MonoBehaviour {
         }
     }
 
+    public void MoveOriginPos(float deltaTime)
+    {
+        if(isRestoring)
+        {
+            duringTime += deltaTime;
+            float distCovered = duringTime * velocity;
+            float fract = distCovered / distance;
+
+            var curPos = transform.position;
+
+            var result = Vector3.Lerp(curPos, originposition, fract);
+            if (!float.IsNaN(result.x) && !float.IsNaN(result.x) && !float.IsNaN(result.x))
+            {
+                transform.position = result;
+            }
+
+            var dist = Vector3.Distance(curPos, originposition);
+            if (dist < MIN_DISTANCE)
+            {
+                transform.position = originposition;
+                isRestoring = false;
+                return;
+            }
+        }
+    }
 }
+
+

@@ -11,7 +11,7 @@ public class ECSGaugeTimer : MonoBehaviour {
     private float energyGauge = 0;
     private float maxEnergy = 10;
     private bool noIncrease = true;
-    private float IncForSecond = 2.0f;
+    private float IncForSecond = 1.0f;
 
     // Use this for initialization
     void Start()

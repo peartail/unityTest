@@ -19,7 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4418947269872230}
-  - component: {fileID: 114145695525928292}
+  - component: {fileID: 114359332876584010}
+  - component: {fileID: 114275339976826748}
   m_Layer: 0
   m_Name: EffectShield
   m_TagString: Untagged
@@ -40,7 +41,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114145695525928292
+--- !u!114 &114275339976826748
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -48,6 +49,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1258737531516136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47a47c5fd150a8c48ac4c5f419cacca8, type: 3}
+  m_Script: {fileID: 11500000, guid: acd95a2c31b1ba647b055ff7ccbc353b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114359332876584010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1258737531516136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf10cdea1344482e91a4f2b58506b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

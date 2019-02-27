@@ -23,15 +23,17 @@ public class HealthCtr : MonoBehaviour {
     private Dictionary<HealthStatus, GameObject> healthStat;
 
 
-    private bool isInstanceShield = false;
-    private ECSInstanceShield instanceShield = null;
+    private List<ReactiveProperty<int>> Instanceshields = null;
     public void InitHealth(ReactiveProperty<int> shield,ReactiveProperty<int> hp,int MaxHP)
     {
         healthStat = new Dictionary<HealthStatus, GameObject>();
+        Instanceshields = new List<ReactiveProperty<int>>();
         rxShield = shield;
         rxHp = hp;
         this.MaxHP = MaxHP;
     }
+
+    #region Effect
 
     public GameObject GetHealthStat(HealthStatus stat)
     {
@@ -53,7 +55,24 @@ public class HealthCtr : MonoBehaviour {
     }
 
 
+    #endregion
 
+    #region InstanceShield
+
+    public void AddInstanceShield(ReactiveProperty<int> shield)
+    {
+        Instanceshields.Add(shield);
+        shield.DistinctUntilChanged().Where(x => x <= 0)
+            .Subscribe(_ =>
+            {
+                Instanceshields.Remove(shield);
+                Debug.Log("Current Count " + Instanceshields.Count);
+            });
+    }
+
+    #endregion
+
+    #region Shield
     public int GetShield()
     {
         return rxShield.Value;
@@ -73,6 +92,12 @@ public class HealthCtr : MonoBehaviour {
         rxShield.Value = Mathf.Max(0, realValue);
         return realValue;
     }
+
+
+    #endregion
+
+
+    #region HP
 
     public int GetHP()
     {
@@ -96,6 +121,9 @@ public class HealthCtr : MonoBehaviour {
         }
         return realValue;
     }
+
+    #endregion
+
 
     public delegate void CustomDamageFunc(ReactiveProperty<int> hp, ReactiveProperty<int> shield, int MaxHP);
     public void CustomDamage(CustomDamageFunc func)

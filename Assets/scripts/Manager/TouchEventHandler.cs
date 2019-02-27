@@ -38,7 +38,6 @@ public class TouchEventHandler : MonoBehaviour {
             .Where(_ => Input.GetMouseButtonDown(0))
             .Select(_ =>
             {
-
                 Ray ray = touchCamera.ScreenPointToRay(Input.mousePosition);
                 return Physics.RaycastAll(ray, 10000, layerMask);
             })
@@ -49,6 +48,10 @@ public class TouchEventHandler : MonoBehaviour {
         int length = hits.Length;
         if(length > 0)
         {
+            var touchedItem = hits[0].transform.gameObject.GetComponent<TouchMoveableItem>();
+            touchedItem?.Clicked();
+
+
             var mouseUpEvent = Observable.EveryUpdate()
             .Where(_ => Input.GetMouseButtonUp(0));
 
@@ -63,8 +66,7 @@ public class TouchEventHandler : MonoBehaviour {
                     if(mainplane.Raycast(ray, out dist))
                     {
                         var pos = ray.GetPoint(dist);
-                        hit.position = new Vector3(pos.x, pos.y, hit.position.z);
-                        ItemEntered(hit);
+                        touchedItem?.SetTouchPoint(pos);
                     }
                 });
 
@@ -73,36 +75,9 @@ public class TouchEventHandler : MonoBehaviour {
                 .Select(_ => hits[0])
                 .Subscribe(x =>
                 {
-                    LocationRestore restore = x.transform.gameObject.GetComponent<LocationRestore>();
-                    if(restore)
-                    {
-                        restore.MoveRelease();
-                    }
+                    touchedItem?.Release();
                 });
         }
 
     }
-
-    private void ItemEntered(Transform itemTrans)
-    {
-        Vector3 raypos = itemTrans.position;
-        raypos.z = 0;
-        Ray ray = new Ray(raypos, Vector3.forward);
-        int layerMask = 1 << 9;
-        RaycastHit[] lists = Physics.RaycastAll(ray, 100, layerMask);
-        if(lists.Length > 0)
-        {
-            //itemTrans.localScale = new Vector3(0.5f, 0.5f);
-            Vector3 myloc = itemTrans.localPosition;
-            myloc.z = 5;
-            itemTrans.localPosition = myloc;
-        }
-        else
-        {
-            Vector3 myloc = itemTrans.localPosition;
-            myloc.z = 0;
-            itemTrans.localPosition = myloc;
-        }
-    }
-
 }
